@@ -6826,7 +6826,7 @@ react-native-reanimated@*, react-native-reanimated@~3.18.0:
     invariant "^2.2.4"
     react-native-is-edge-to-edge "1.1.7"
 
-react-native-vision-camera@^4.7.0:
+react-native-vision-camera@^4.5.0:
   version "4.7.0"
   resolved "https://registry.npmjs.org/react-native-vision-camera/-/react-native-vision-camera-4.7.0.tgz"
   integrity sha512-aiwmBIhpiQA7fuhqRiBFAgISBI+qAyoZeZakjz/PDwUEuwGKmjYrC2LMOcFAkqSKvDA4vsoOXGxpnk77NoCZBA==

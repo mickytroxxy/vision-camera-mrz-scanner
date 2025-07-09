@@ -82,7 +82,7 @@
     "react-native": "0.79.3",
     "react-native-builder-bob": "^0.30.0",
     "react-native-reanimated": "~3.18.0",
-    "react-native-vision-camera": "^4.7.0",
+    "react-native-vision-camera": "^4.5.0",
     "release-it": "^17.0.0",
     "typescript": "^5.6.0"
   },
