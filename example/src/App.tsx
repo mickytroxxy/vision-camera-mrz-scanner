@@ -2,12 +2,11 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {useCameraDevices} from 'react-native-vision-camera';
+import {useCameraDevice} from 'react-native-vision-camera';
 import {MRZProperties, MRZScanner} from 'vision-camera-mrz-scanner';
 
 export default function App() {
-  const devices = useCameraDevices();
-  const device = devices.back;
+  const device = useCameraDevice('back');
   const [isActive, setIsActive] = useState(true);
   const [mrzResults, setMrzResults] = useState<MRZProperties>();
 
@@ -34,8 +33,6 @@ export default function App() {
           enableBoundingBox={false}
           style={StyleSheet.absoluteFill}
           cameraProps={{
-            orientation: 'portrait',
-            frameProcessorFps: 60,
             device: device,
             isActive: isActive,
           }}

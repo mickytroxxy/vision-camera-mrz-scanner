@@ -23,7 +23,8 @@ import {runOnJS} from 'react-native-reanimated';
 import {
   Camera,
   Frame,
-  useCameraDevices,
+  useCameraDevice,
+  useCameraPermission,
   useFrameProcessor,
 } from 'react-native-vision-camera';
 import {
@@ -57,11 +58,10 @@ const MRZCamera: FC<PropsWithChildren<MRZCameraProps>> = ({
   //  setting up the state
   //*****************************************************************************************
   // Permissions
-  const [hasPermission, setHasPermission] = React.useState(false);
+  const {hasPermission, requestPermission} = useCameraPermission();
   // camera states
-  const devices = useCameraDevices();
   const direction: 'front' | 'back' = cameraDirection ?? 'back';
-  const device = devices[direction];
+  const device = useCameraDevice(direction);
   const camera = useRef<Camera>(null);
   const {height: screenHeight, width: screenWidth} = useWindowDimensions();
   const [isActive, setIsActive] = useState(true);
@@ -172,11 +172,10 @@ const MRZCamera: FC<PropsWithChildren<MRZCameraProps>> = ({
   );
 
   useEffect(() => {
-    (async () => {
-      const status = await Camera.requestCameraPermission();
-      setHasPermission(status === 'authorized');
-    })();
-  }, []);
+    if (!hasPermission) {
+      requestPermission();
+    }
+  }, [hasPermission, requestPermission]);
 
   /* Using the useMemo hook to create a style object. */
   const boundingStyle = useMemo<StyleProp<ViewStyle>>(
@@ -259,25 +258,19 @@ const MRZCamera: FC<PropsWithChildren<MRZCameraProps>> = ({
           audio={cameraProps?.audio}
           zoom={cameraProps?.zoom}
           enableZoomGesture={cameraProps?.enableZoomGesture}
-          preset={cameraProps?.preset}
           format={cameraProps?.format ?? format}
           fps={cameraProps?.fps ?? 10}
-          hdr={cameraProps?.hdr}
+          photoHdr={cameraProps?.photoHdr}
+          videoHdr={cameraProps?.videoHdr}
           lowLightBoost={cameraProps?.lowLightBoost}
-          colorSpace={cameraProps?.colorSpace}
           videoStabilizationMode={cameraProps?.videoStabilizationMode}
           enableDepthData={cameraProps?.enableDepthData}
           enablePortraitEffectsMatteDelivery={
             cameraProps?.enablePortraitEffectsMatteDelivery
           }
-          enableHighQualityPhotos={cameraProps?.enableHighQualityPhotos}
           onError={cameraProps?.onError}
           onInitialized={cameraProps?.onInitialized}
-          onFrameProcessorPerformanceSuggestionAvailable={
-            cameraProps?.onFrameProcessorPerformanceSuggestionAvailable
-          }
           frameProcessor={cameraProps?.frameProcessor ?? frameProcessor}
-          frameProcessorFps={cameraProps?.frameProcessorFps ?? 30}
           onLayout={(event: LayoutChangeEvent) => {
             setPixelRatio(
               event.nativeEvent.layout.width /
